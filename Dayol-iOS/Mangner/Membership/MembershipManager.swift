@@ -9,9 +9,11 @@ import Foundation
 import RxSwift
 
 /// Member Info
-struct MemberInfo {
+struct MembershipInfo {
     let deviceToken: String
     let activityType: UserActivityType
+    let expireAt: TimeInterval
+    let isMembership: Bool
 }
 
 /// Activity Type
@@ -22,18 +24,32 @@ enum UserActivityType: Int {
 final class MembershipManager {
     static let shared = MembershipManager()
 
-    var isMembership: Bool { DYUserDefaults.isMembership }
+    var info: MembershipInfo {
+        return MembershipInfo(
+            deviceToken: DYUserDefaults.deviceToken,
+            activityType: UserActivityType(rawValue:DYUserDefaults.activityType) ?? .new,
+            expireAt: DYUserDefaults.subscribeExpireAt,
+            isMembership: DYUserDefaults.isMembership
+        )
+    }
 
-    var userActivityType: UserActivityType { UserActivityType(rawValue: DYUserDefaults.activityType) ?? .new }
+    var isMembership: Bool { info.isMembership }
+
+    var userActivityType: UserActivityType { info.activityType }
+
+    var membershipExpireAt: TimeInterval { info.expireAt }
 
     var didChangeMembershipType = BehaviorSubject<UserActivityType>(
         value: UserActivityType(rawValue: DYUserDefaults.activityType) ?? .new
     )
 
+    let disposeBag = DisposeBag()
+
     /// Changed User Activity Type
-    func didChangeMembership(type: UserActivityType) {
-        DYUserDefaults.activityType = type.rawValue
-        DYUserDefaults.isMembership = type == .subscriber ? true : false
-        didChangeMembershipType.onNext(type)
+    func didChangeMembership(response: IAPAutoSubscriptionResponse) {
+        DYUserDefaults.subscribeExpireAt = response.expireAt
+        DYUserDefaults.activityType = response.activityType.rawValue
+        DYUserDefaults.isMembership = response.activityType == .subscriber ? true : false
+        didChangeMembershipType.onNext(response.activityType)
     }
 }

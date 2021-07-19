@@ -29,6 +29,7 @@ private enum DYUserDefaultsType: String {
     case deviceToken
     case isMembership
     case activityType
+    case subscribeExpireAt
 }
 
 enum DYUserDefaults {
@@ -43,6 +44,8 @@ enum DYUserDefaults {
     static var isMembership: Bool
     @DYUserDefault(key: DYUserDefaultsType.activityType.rawValue, value: 0)
     static var activityType: Int
+    @DYUserDefault(key: DYUserDefaultsType.subscribeExpireAt.rawValue, value: 0)
+    static var subscribeExpireAt: TimeInterval
 
     // MARK: ...
 }

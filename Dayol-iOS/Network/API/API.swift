@@ -104,7 +104,7 @@ extension APIRequest {
     }
 
     fileprivate func errorHandler(error: Swift.Error) -> Single<Response> {
-        DYLog.e(.api, value: error)
+        DYLog.e(.api, in: Self.self, value: error)
         return .error(error)
     }
 }

@@ -36,7 +36,7 @@ private class ViewModel {
                 }
                 .disposed(by: self.disposeBag)
 
-            IAPManager.shared.fetchProducts()
+            IAPManager.shared.fetchProducts(type: .autoSubscription)
             return Disposables.create()
         }
     }
@@ -69,7 +69,7 @@ private class ViewModel {
                 description: $0.localizedDescription
             )
 
-            switch IAPProduct(identifier: $0.productIdentifier) {
+            switch IAPProductType.AutoSubscriptionProduct(identifier: $0.productIdentifier) {
             case .membershipYear:
                 self.products[.year(product: productInfo)] = $0
             case .membershipMonth:
@@ -143,7 +143,6 @@ class MembershipViewController: DYViewController {
     func fetch() {
         viewModel.fetchProducts()
             .observe(on: MainScheduler.instance)
-            .delay(.seconds(2), scheduler: MainScheduler.instance) // TODO: Remove
             .attachHUD(view)
             .subscribe(onSuccess: { [weak self] products in
                 guard let self = self else { return }
@@ -228,12 +227,13 @@ extension MembershipViewController: MembershipSubscribeViewDelegate {
         if let type = productView.type {
             viewModel.payment(key: type)
                 .observe(on: MainScheduler.instance)
+                .attachHUD(view)
                 .subscribe(onSuccess: { [weak self] result in
                     if result {
                         self?.dismiss(animated: true)
                     } else {
                         //TODO: Error Popup
-                        DYLog.e(.inAppPurchase, value: "Purchase Error")
+                        DYLog.e(.inAppPurchase, in: Self.self, value: "Purchase Error")
                     }
                 })
                 .disposed(by: disposeBag)

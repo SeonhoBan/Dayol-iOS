@@ -62,7 +62,7 @@ final class GADManager: NSObject {
 
 extension GADManager: GADBannerViewDelegate {
     func bannerViewDidReceiveAd(_ bannerView: GADBannerView) {
-        DYLog.d(.ad, value: #function)
+        DYLog.d(.ad, in: Self.self, value: #function)
         if let containerView = bannerView.superview, containerView.isHidden {
             UIView.animate(withDuration: 1) {
                 bannerView.alpha = 1
@@ -77,22 +77,22 @@ extension GADManager: GADBannerViewDelegate {
     }
 
     func bannerView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: Error) {
-        DYLog.d(.ad, value: "\(#function) | \(error.localizedDescription)")
+        DYLog.d(.ad, in: Self.self, value: "\(#function) | \(error.localizedDescription)")
     }
 
     func bannerViewDidRecordImpression(_ bannerView: GADBannerView) {
-        DYLog.d(.ad, value: #function)
+        DYLog.d(.ad, in: Self.self, value: #function)
     }
 
     func bannerViewWillPresentScreen(_ bannerView: GADBannerView) {
-        DYLog.d(.ad, value: #function)
+        DYLog.d(.ad, in: Self.self, value: #function)
     }
 
     func bannerViewWillDismissScreen(_ bannerView: GADBannerView) {
-        DYLog.d(.ad, value: #function)
+        DYLog.d(.ad, in: Self.self, value: #function)
     }
 
     func bannerViewDidDismissScreen(_ bannerView: GADBannerView) {
-        DYLog.d(.ad, value: #function)
+        DYLog.d(.ad, in: Self.self, value: #function)
     }
 }

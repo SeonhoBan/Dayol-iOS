@@ -79,7 +79,8 @@ final class LaunchViewController: DYViewController {
         launchManager.launchConfig
             .observe(on: MainScheduler.instance)
             .attachHUD(self.view)
-            .subscribe { response in
+            .subscribe { _ in
+                DYLog.i(.info, in: Self.self, value: MembershipManager.shared.info)
                 AppDelegate.shared?.window?.switchRootViewController(HomeTabViewController())
             }
             .disposed(by: disposeBag)

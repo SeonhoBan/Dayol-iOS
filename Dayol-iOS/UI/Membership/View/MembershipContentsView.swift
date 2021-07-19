@@ -73,7 +73,7 @@ class MembershipContentsView: UIView {
 
             let headerImageView = makeImageView(with: headerImage)
             // TODO: 실제 구독날자로 변경해야됨.
-            let expirationDateView = makeExpirationDateView(with: Config.shared.isProd ? Date.now : Date(timeIntervalSince1970: 0))
+            let expirationDateView = makeExpirationDateView(with: MembershipManager.shared.membershipExpireAt.date)
             let bodyImageView = makeImageView(with: bodyImage)
 
             containerStackView.addArrangedSubview(headerImageView)

@@ -40,7 +40,7 @@ class DiaryPaperViewModel {
             items: items,
             drawing: drawing
         )
-        DYLog.d(.debug, value: "items: \(items)")
+        DYLog.d(.debug, in: Self.self, value: "items: \(items)")
     }
 }
 

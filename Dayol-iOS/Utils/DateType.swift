@@ -56,6 +56,10 @@ enum DateType {
 // MARK: String
 
 extension String {
+    func date() -> Date? {
+        return TimeInterval(self)?.date
+    }
+
     func date(with dateType: DateType) -> Date? {
         return dateType.formatter.date(from: self)
     }

@@ -26,21 +26,16 @@ final class LaunchManager {
         }
     }
 
-    var launchConfig: Single<Any> {
-        return Single.just(true) // 약관
+    var launchConfig: Single<Void> {
+        return Single.just(Void()) // 약관
             .map { _ in
                 FirebaseApp.initialize()
                 PersistentManager.shared.saveContext()
                 GADManager.mobileAdsStart()
+            }
+            .flatMap { _ -> Single<Void> in
+                return IAPManager.shared.checkPurchasedAndUpdate()
+            }
 
-            }
-            .flatMap { _ -> Single<API.MembershipReceiptAPI.Response> in
-                return IAPManager.shared.checkPurchased()
-            }
-            .map { (response: API.MembershipReceiptAPI.Response) -> Result  in
-                DYLog.i(.inAppPurchase, value: "[STATUS: \(response.status)]")
-                DYLog.i(.inAppPurchase, value: "[ADMIN_ID\(response.receipt.adamId)]")
-                return.prod
-            }
     }
 }

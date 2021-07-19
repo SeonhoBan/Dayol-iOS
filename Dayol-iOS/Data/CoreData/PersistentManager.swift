@@ -36,7 +36,7 @@ class PersistentManager {
         let container = NSPersistentContainer(name: "Dayol")
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
-                DYLog.e(.coreData, value: "Unresolved Error \(error) | \(error.userInfo)")
+                DYLog.e(.coreData, in: PersistentManager.self, value: "Unresolved Error \(error) | \(error.userInfo)")
             }
         }
         return container
@@ -53,7 +53,7 @@ class PersistentManager {
             }
             catch {
                 let error = error as NSError
-                DYLog.e(.coreData, value: "Unresolved Error \(error) | \(error.userInfo)")
+                DYLog.e(.coreData, in: Self.self, value: "Unresolved Error \(error) | \(error.userInfo)")
             }
         }
     }
@@ -90,7 +90,7 @@ extension PersistentManager {
         }
         catch {
             let error = error as NSError
-            DYLog.e(.coreData, value: "Fetch Error \(error) | \(error.userInfo)")
+            DYLog.e(.coreData, in: Self.self, value: "Fetch Error \(error) | \(error.userInfo)")
             return nil
         }
     }
