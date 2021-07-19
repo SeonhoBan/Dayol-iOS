@@ -27,7 +27,7 @@ class PaperPresentView: UIView {
         didSet {
             let scale = CGAffineTransform(scaleX: self.scaleForFit, y: self.scaleForFit)
             self.tableView.transform = scale
-            self.drawingContentView.transform = scale
+            self.contentsView.transform = scale
             let constarintConstant: CGFloat = (self.height - self.tableView.frame.height) / 2
             self.contentTop.constant = -constarintConstant
             self.contentBottom.constant = constarintConstant
@@ -44,8 +44,8 @@ class PaperPresentView: UIView {
         return tableView
     }()
     
-    var drawingContentView: DrawingContentView = {
-        let view = DrawingContentView()
+    var contentsView: DYContentsView = {
+        let view = DYContentsView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = false
         
@@ -81,7 +81,7 @@ class PaperPresentView: UIView {
         setupPaperBorder()
 
         addSubview(tableView)
-        addSubview(drawingContentView)
+        addSubview(contentsView)
 
         setupConstraint()
         updatePaper()
@@ -108,24 +108,24 @@ class PaperPresentView: UIView {
                 tableView.widthAnchor.constraint(equalToConstant: size.width),
                 tableView.heightAnchor.constraint(equalToConstant: height),
 
-                drawingContentView.topAnchor.constraint(equalTo: tableView.topAnchor),
-                drawingContentView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
-                drawingContentView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-                drawingContentView.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)
+                contentsView.topAnchor.constraint(equalTo: tableView.topAnchor),
+                contentsView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+                contentsView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+                contentsView.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)
             ])
         }
     }
     
     private func reginterIdentifier() {
         tableView.register(BasePaper.self, forCellReuseIdentifier: BasePaper.className)
-        tableView.register(MujiPaper.self, forCellReuseIdentifier: MujiPaper.className)
-        tableView.register(DailyPaper.self, forCellReuseIdentifier: DailyPaper.className)
-        tableView.register(GridPaper.self, forCellReuseIdentifier: GridPaper.className)
-        tableView.register(CornellPaper.self, forCellReuseIdentifier: CornellPaper.className)
-        tableView.register(QuartetPaper.self, forCellReuseIdentifier: QuartetPaper.className)
+        tableView.register(MujiPaperView.self, forCellReuseIdentifier: MujiPaperView.className)
+        tableView.register(DailyPaperView.self, forCellReuseIdentifier: DailyPaperView.className)
+        tableView.register(GridPaperView.self, forCellReuseIdentifier: GridPaperView.className)
+        tableView.register(CornellPaperView.self, forCellReuseIdentifier: CornellPaperView.className)
+        tableView.register(QuartetPaperView.self, forCellReuseIdentifier: QuartetPaperView.className)
         tableView.register(WeeklyCalendarView.self, forCellReuseIdentifier: WeeklyCalendarView.className)
         tableView.register(MonthlyCalendarView.self, forCellReuseIdentifier: MonthlyCalendarView.className)
-        tableView.register(MonthlyTrackerPaper.self, forCellReuseIdentifier: MonthlyTrackerPaper.className)
+        tableView.register(MonthlyTrackerPaperView.self, forCellReuseIdentifier: MonthlyTrackerPaperView.className)
     }
     
     private func setupPaperBorder() {
@@ -150,8 +150,8 @@ extension PaperPresentView {
     }
 
     private func updatePaper() {
-        drawingContentView.setItems(paper.contents)
-        drawingContentView.setDrawData(paper.drawCanvas)
+        contentsView.setItems(paper.contents)
+        contentsView.setDrawData(paper.drawCanvas)
     }
 }
 
@@ -229,42 +229,42 @@ extension PaperPresentView: UITableViewDataSource {
             return cell
         case .daily:
             guard let date = paper.date else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCell(DailyPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(DailyPaperView.self, for: indexPath)
             let viewModel = DailyPaperViewModel(date: date, drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)
 
             return cell
         case .quartet:
-            let cell = tableView.dequeueReusableCell(QuartetPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(QuartetPaperView.self, for: indexPath)
             let viewModel = PaperViewModel(drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)
 
             return cell
         case .grid:
-            let cell = tableView.dequeueReusableCell(GridPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(GridPaperView.self, for: indexPath)
             let viewModel = PaperViewModel(drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)
 
             return cell
         case .cornell:
-            let cell = tableView.dequeueReusableCell(CornellPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(CornellPaperView.self, for: indexPath)
             let viewModel = PaperViewModel(drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)
 
             return cell
         case .tracker:
-            let cell = tableView.dequeueReusableCell(MonthlyTrackerPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(MonthlyTrackerPaperView.self, for: indexPath)
             let viewModel = PaperViewModel(drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)
 
             return cell
         case .muji:
-            let cell = tableView.dequeueReusableCell(MujiPaper.self, for: indexPath)
+            let cell = tableView.dequeueReusableCell(MujiPaperView.self, for: indexPath)
             let viewModel = PaperViewModel(drawModel: DrawModel())
 
             cell.configure(viewModel: viewModel, orientation: orientaion)

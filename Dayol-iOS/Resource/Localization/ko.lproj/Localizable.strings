@@ -143,7 +143,7 @@
 "edit_memo_title" = "메모 편집";
 "edit_lasso_title" = "올가미도구사용법";
 "edit_lasso_text" = "선택할 대상을 포함하여 손으로 그리고\n선택영역을 탭하면 대상들을 한번에 제어할 수 있습니다.";
-"edit_pen_title" = "펜 설정";
+"edit_pen_title" = "펜/지우개";
 "edit_pen_type" = "펜 유형";
 "edit_pen_pen" = "볼펜";
 "edit_pen_highlighter" = "형광펜";

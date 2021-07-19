@@ -163,7 +163,7 @@ extension DiaryEditCoverView {
     }
 
     private func bindEvent() {
-        diaryView.drawingContentView.currentToolSubject.bind { [weak self] tool in
+        diaryView.contentsView.currentToolSubject.bind { [weak self] tool in
             guard tool != nil else {
                 self?.scrollView.panGestureRecognizer.minimumNumberOfTouches = 1
                 return

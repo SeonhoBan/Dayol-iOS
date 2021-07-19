@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import RxSwift
 
 private enum Design {
     static let colorSettingPalletViewHeight: CGFloat = 45.0
@@ -35,7 +36,7 @@ private enum Text {
 
 class ColorSettingView: UIView {
 
-    let colorSubject = CurrentValueSubject<UIColor, Never>(.black)
+    let colorSubject = BehaviorSubject<UIColor>(value: .black)
 
     // MARK: UI Property
 
@@ -81,7 +82,7 @@ extension ColorSettingView {
     func set(color: UIColor) {
         colorSettingPaletteView.viewModel.currentHexColor.send(color.hexString)
         colorPicker.set(color: color)
-        colorSubject.send(color)
+        colorSubject.onNext(color)
     }
 
 }
@@ -128,7 +129,7 @@ extension ColorSettingView {
     private func bindEvent() {
         colorSettingPaletteView.didChangePaletteColor = { [weak self] color in
             self?.colorPicker.set(color: color)
-            self?.colorSubject.send(color)
+            self?.colorSubject.onNext(color)
         }
     }
 
@@ -138,7 +139,7 @@ extension ColorSettingView {
 
     @objc func handleColorChanged(picker: ColorPicker) {
         colorSettingPaletteView.viewModel.currentHexColor.send(picker.color.hexString)
-        colorSubject.send(picker.color)
+        colorSubject.onNext(picker.color)
     }
 
 }

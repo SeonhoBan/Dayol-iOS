@@ -76,18 +76,6 @@ enum Assets {
         enum ToolBar {
             static let info = UIImage(named: "toolBar_info")
 
-            enum Lasso {
-                static let info = UIImage(named: "toolBar_lasso_info")
-            }
-
-            enum Pencil {
-                static let penOn = UIImage(named: "toolBar_pencil_pen_on")
-                static let penOff = UIImage(named: "toolBar_pencil_pen_off")
-                static let highlightOn = UIImage(named: "toolBar_pencil_highlight_on")
-                static let highlightOff = UIImage(named: "toolBar_pencil_highlight_off")
-                static let alphaInfoBackground = UIImage(named: "toolBar_pencil_alphaInfo_bg")
-            }
-
             enum ColorPicker {
                 static let whitePlus = UIImage(named: "toolBar_color_plus_white")
                 static let blackPlus = UIImage(named: "toolBar_color_plus_black")

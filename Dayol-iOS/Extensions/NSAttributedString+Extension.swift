@@ -29,4 +29,11 @@ extension NSAttributedString {
         // NSMutableAttributedString 에서도 사용하기위해 Self 사용
         return Self(string: text, attributes: attributes)
     }
+
+    func height(with width: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, context: nil)
+
+        return ceil(boundingBox.height)
+    }
 }

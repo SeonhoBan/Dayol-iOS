@@ -32,7 +32,7 @@ class DiaryView: UIView, Undoable {
     private var lockerWidthConstraint: NSLayoutConstraint?
     private var lockerHeightConstraint: NSLayoutConstraint?
 
-    var drawingContentView = DrawingContentView()
+    var contentsView = DYContentsView()
 
     var hasLogo: Bool = false
     var isLock: Bool = false {
@@ -67,9 +67,9 @@ class DiaryView: UIView, Undoable {
     private func initView() {
         coverView.translatesAutoresizingMaskIntoConstraints = false
         lockerView.translatesAutoresizingMaskIntoConstraints = false
-        drawingContentView.translatesAutoresizingMaskIntoConstraints = false
+        contentsView.translatesAutoresizingMaskIntoConstraints = false
 
-        coverView.addSubview(drawingContentView)
+        coverView.addSubview(contentsView)
         addSubview(coverView)
         addSubview(lockerView)
 
@@ -89,10 +89,10 @@ class DiaryView: UIView, Undoable {
             lockerView.centerYAnchor.constraint(equalTo: coverView.centerYAnchor),
             lockerView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-            drawingContentView.leadingAnchor.constraint(equalTo: coverView.leadingAnchor),
-            drawingContentView.topAnchor.constraint(equalTo: coverView.topAnchor),
-            drawingContentView.bottomAnchor.constraint(equalTo: coverView.bottomAnchor),
-            drawingContentView.trailingAnchor.constraint(equalTo: coverView.trailingAnchor),
+            contentsView.leadingAnchor.constraint(equalTo: coverView.leadingAnchor),
+            contentsView.topAnchor.constraint(equalTo: coverView.topAnchor),
+            contentsView.bottomAnchor.constraint(equalTo: coverView.bottomAnchor),
+            contentsView.trailingAnchor.constraint(equalTo: coverView.trailingAnchor),
 
             lockerMarginConstraint,
             lockerWidthConstraint,

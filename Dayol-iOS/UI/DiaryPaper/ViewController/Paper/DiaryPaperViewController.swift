@@ -22,7 +22,7 @@ private enum Design {
     }
 }
 
-class DiaryPaperViewController: DrawableViewController {
+class DiaryPaperViewController: DYBaseEditViewController {
     let didReceivedEvent = PublishSubject<DiaryPaperEventType>()
     let index: Int
     let scaleSubject = PassthroughSubject<CGFloat, Error>()
@@ -47,11 +47,11 @@ class DiaryPaperViewController: DrawableViewController {
     }
 
     lazy var paper = PaperPresentView(paper: viewModel.paper, count: viewModel.numberOfPapers)
-    override var drawingContentView: DrawingContentView {
+    override var contentsView: DYContentsView {
         get {
-            paper.drawingContentView
+            paper.contentsView
         } set {
-            paper.drawingContentView = newValue
+            paper.contentsView = newValue
         }
     }
     

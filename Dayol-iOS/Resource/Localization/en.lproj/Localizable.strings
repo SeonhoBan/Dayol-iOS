@@ -143,7 +143,7 @@
 "edit_memo_title" = "Edit memo";
 "edit_lasso_title" = "How to use the lasso tool";
 "edit_lasso_text" = "You can control the objects at once by tapping the selection and drawing by hand including the object to be selected.";
-"edit_pen_title" = "Pen Setting";
+"edit_pen_title" = "Pen/Erase Setting";
 "edit_pen_type" = "Type";
 "edit_pen_pen" = "Pen";
 "edit_pen_highlighter" = "Highlighter";

@@ -21,6 +21,7 @@ private enum Design {
     static let downButtonRightMargin: CGFloat = 20.0
     static let defaultBGColor = UIColor.white
     static let downButton = Assets.Image.Modal.down
+    static let shadowColor = UIColor(white: 0, alpha: 0.15)
 }
 
 class DYModalViewController: DYViewController {
@@ -29,6 +30,7 @@ class DYModalViewController: DYViewController {
     private let disposeBag = DisposeBag()
     private var lastMoved: CGFloat = .greatestFiniteMagnitude
     var dismissCompeletion: (() -> Void)?
+    var usePopoverPresntion: Bool = false
 
     // MARK: - DYModalConfiguration
 
@@ -135,11 +137,15 @@ class DYModalViewController: DYViewController {
     }
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        dismissContentView(animated: flag) {
-            super.dismiss(animated: false, completion: { [weak self] in
-                completion?()
-                self?.dismissCompeletion?()
-            })
+        if usePopoverPresntion {
+            super.dismiss(animated: flag, completion: completion)
+        } else {
+            dismissContentView(animated: flag) {
+                super.dismiss(animated: false, completion: { [weak self] in
+                    completion?()
+                    self?.dismissCompeletion?()
+                })
+            }
         }
     }
 
@@ -319,9 +325,10 @@ extension DYModalViewController {
         dimView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(dimView)
 
-        containerView.backgroundColor = Design.defaultBGColor
-        containerView.layer.cornerRadius = Design.cornerRadius
-        containerView.layer.masksToBounds = true
+        headerArea.backgroundColor = Design.defaultBGColor
+        headerArea.layer.cornerRadius = Design.cornerRadius
+        headerArea.layer.masksToBounds = true
+        contentArea.backgroundColor = Design.defaultBGColor
         containerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(containerView)
 
@@ -329,6 +336,8 @@ extension DYModalViewController {
         contentArea.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(headerArea)
         containerView.addSubview(contentArea)
+
+        containerView.layer.setZepplinShadow(x: 0, y: -2, blur: 4, color: Design.shadowColor)
     }
 
     private func setupConstraints() {
@@ -421,6 +430,40 @@ extension DYModalViewController {
             downButton.rightAnchor.constraint(equalTo: headerArea.rightAnchor,
                                               constant: -Design.downButtonRightMargin)
         ])
+    }
+
+}
+
+// MARK: - Popover
+
+extension DYModalViewController: UIAdaptivePresentationControllerDelegate {
+    func showPopover(contents: UIView, sender: UIView, preferredSize: CGSize) {
+        let popoverVC = UIViewController()
+        popoverVC.view.addSubViewPinEdge(contents)
+
+        popoverVC.preferredContentSize = preferredSize
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.view.backgroundColor = contents.backgroundColor
+
+        if let pres = popoverVC.presentationController {
+            pres.delegate = self
+        }
+
+        if let pop = popoverVC.popoverPresentationController {
+            pop.sourceView = sender
+            pop.sourceRect = sender.bounds
+            pop.permittedArrowDirections = .down
+        }
+        usePopoverPresntion = true
+        present(popoverVC, animated: true, completion: nil)
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        usePopoverPresntion = false
     }
 
 }

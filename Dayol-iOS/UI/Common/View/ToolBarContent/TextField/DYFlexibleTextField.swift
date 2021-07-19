@@ -419,10 +419,11 @@ private extension DYFlexibleTextField {
 
         let contentView = ColorSettingView()
         contentView.set(color: currentTextColor)
-        contentView.colorSubject.sink { [weak self] color in
-            self?.setAttributes(key: .foregroundColor, value: color)
-        }
-        .store(in: &cancellable)
+        contentView.colorSubject
+            .subscribe(onNext: { [weak self] color in
+                self?.setAttributes(key: .foregroundColor, value: color)
+            })
+            .disposed(by: disposeBag)
         
         modalVC.contentView = contentView
         keyWindow.rootViewController?.presentedViewController?.presentCustomModal(modalVC)
